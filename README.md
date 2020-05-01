@@ -1,4 +1,4 @@
-# CloudStudy
+# StarCloudStudy
 
 A cloud study platform with front end using Unity and back end using spring.
 
