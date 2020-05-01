@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.whu.cloudstudy_server.mapper.UserAndPlanetMapper">
+
+    <select id="findPlanetByUserId" resultType="com.whu.cloudstudy_server.entity.Planet">
+        select p.*
+        from Planet p,UserAndPlanet uap
+        where p.id = uap.planetId and uap.userId = #{userId}
+    </select>
+
+    <select id="findAllUserByPlanetId" resultType="com.whu.cloudstudy_server.entity.User">
+        select u.*
+        from User u, UserAndPlanet uap
+        where uap.planetId = #{planetId} and u.id = uap.userId order by uap.enterTime asc
+    </select>
+
+    <select id="findUAPByPlanetIdAndUserId" resultType="com.whu.cloudstudy_server.entity.UserAndPlanet">
+        select * from UserAndPlanet where planetId = #{planetId} and userId = #{userId}
+    </select>
+
+    <insert id="insertUserAndPlanet" useGeneratedKeys="true" keyProperty="id" parameterType="com.whu.cloudstudy_server.entity.UserAndPlanet">
+        insert into UserAndPlanet (userId, planetId)
+        values (#{userId}, #{planetId})
+    </insert>
+
+    <delete id="deleteUserAndPlanet" parameterType="java.lang.Integer">
+        delete from UserAndPlanet where id = #{id}
+    </delete>
+
+    <delete id="deleteUserAndPlanetByPlanetId" parameterType="java.lang.Integer">
+        delete from UserAndPlanet where planetId = #{planetId}
+    </delete>
+
+</mapper>

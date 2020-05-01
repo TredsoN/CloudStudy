@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.whu.cloudstudy_server.mapper.StudyRecordMapper">
+
+    <insert id="insertStudyRecord" useGeneratedKeys="true" keyProperty="id" parameterType="com.whu.cloudstudy_server.entity.StudyRecord">
+        insert into StudyRecord (userId, planetId, operation)
+        values (#{userId}, #{planetId}, #{operation})
+    </insert>
+
+    <delete id="deleteStudyRecordById" parameterType="java.lang.Integer">
+        delete from StudyRecord where id = #{id}
+    </delete>
+
+    <delete id="deleteStudyRecordByPlanetId" parameterType="java.lang.Integer">
+        delete from StudyRecord where planetId = #{planetId}
+    </delete>
+
+    <select id="findLatestStudyRecordByUserIdAndPlanetId" resultType="com.whu.cloudstudy_server.entity.StudyRecord">
+        select * from StudyRecord where userId = #{userId} and planetId = #{planetId} order by time desc limit 1
+    </select>
+
+    <select id="findLatestStudyRecordByUserIdAndOperation" resultType="com.whu.cloudstudy_server.entity.StudyRecord">
+        select * from StudyRecord where userId = #{userId} and operation = #{operation} order by time desc limit 1
+    </select>
+
+    <select id="findStudyRecordByPlanetId" resultType="com.whu.cloudstudy_server.entity.StudyRecord">
+        select * from StudyRecord where planetId = #{planetId} order by time desc,id asc limit #{batchNum}, 15
+    </select>
+
+    <select id="findAllByUserIdAndTimeBetween" resultType="com.whu.cloudstudy_server.entity.StudyRecord">
+        select * from StudyRecord where userId = #{userId} and time between #{startTime} and #{stopTime} order by time asc
+    </select>
+
+    <select id="findAllByUserIdAndGalaxyAndTimeBetween" resultType="com.whu.cloudstudy_server.entity.StudyRecord">
+        select s.*
+        from StudyRecord s,Planet p
+        where s.userId = #{userId} and s.planetId = p.id and p.galaxy = #{galaxy} and s.time between #{startTime} and #{stopTime} order by s.time asc
+    </select>
+
+    <select id="findAllByUserIdAndPlanetIdAndTimeBetween" resultType="com.whu.cloudstudy_server.entity.StudyRecord">
+        select * from StudyRecord where userId = #{userId} and planetId= #{planetId} and time between #{startTime} and #{stopTime} order by time asc
+    </select>
+
+    <select id="findAllByUserIdAndPlanetId" resultType="com.whu.cloudstudy_server.entity.StudyRecord">
+        select * from StudyRecord where userId = #{userId} and planetId = #{planetId}
+    </select>
+
+    <select id="findAllByUserId" resultType="com.whu.cloudstudy_server.entity.StudyRecord">
+        select * from StudyRecord where userId = #{userId}
+    </select>
+</mapper>
